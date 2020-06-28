@@ -14,16 +14,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
           primarySwatch: Colors.cyan,
-          primaryColor: Colors.lightBlue[300],
+          primaryColor: Colors.cyan[300],
           accentColor: Colors.lime[300],
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
-                    title: TextStyle(
-                      fontFamily: 'Quicksand',
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+              title: TextStyle(
+                fontFamily: 'Quicksand',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              button: TextStyle(
+                color: Colors.white,
+              )),
           appBarTheme: AppBarTheme(
               textTheme: ThemeData.light().textTheme.copyWith(
                     title: TextStyle(
@@ -66,8 +68,10 @@ class _MyAppState extends State<MyHomePage> {
   ];
 
   List<Transaction> get _recientTransactions {
-    return _userTransactions.where( (tx) {
-      return tx.date.isAfter(( DateTime.now().subtract(Duration(days: 7),)));
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter((DateTime.now().subtract(
+        Duration(days: 7),
+      )));
     }).toList();
   }
 
@@ -113,8 +117,37 @@ class _MyAppState extends State<MyHomePage> {
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            Column(
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  width: 400,
+                  child: Image.asset(
+                    'assets/images/bottom.png',
+                    fit: BoxFit.cover,
+                    
+                  ),
+                )
+              ],
+            ),
             Chart(_recientTransactions),
-            TransactionList(_userTransactions),
+            Container(
+              height: 350,
+              child: TransactionList(_userTransactions),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  width: 400,
+                  child: Image.asset(
+                    'assets/images/bottom.png',
+                    fit: BoxFit.cover,
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),

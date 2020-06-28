@@ -50,6 +50,9 @@ flutter:
   assets:
     - assets/images/waiting.png
     - assets/images/tenor.gif
+    - assets/images/bottom.png
+    - assets/images/top.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
