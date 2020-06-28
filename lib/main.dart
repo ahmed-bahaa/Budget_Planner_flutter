@@ -75,7 +75,7 @@ class _MyAppState extends State<MyHomePage> {
     }).toList();
   }
 
-  _addTransaction(String txTitle, double txamount , DateTime chosendate) {
+  _addTransaction(String txTitle, double txamount, DateTime chosendate) {
     final newtx = Transaction(
       amount: txamount,
       title: txTitle,
@@ -88,36 +88,37 @@ class _MyAppState extends State<MyHomePage> {
     });
   }
 
-  _deleteTransaction(String id){
-   setState(() {
-      _userTransactions.removeWhere((Tx) => Tx.id == id );
-   });
+  _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((Tx) => Tx.id == id);
+    });
   }
 
   void _startNewTrnas(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
       builder: (_) {
-        return NewTransaction(_addTransaction );
+        return NewTransaction(_addTransaction);
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Budget Planner",
-          // style: TextStyle(fontFamily: 'OpenSans'),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _startNewTrnas(context),
-          ),
-        ],
+    final appbar = AppBar(
+      title: Text(
+        "Budget Planner",
+        // style: TextStyle(fontFamily: 'OpenSans'),
       ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startNewTrnas(context),
+        ),
+      ],
+    );
+    return Scaffold(
+      appBar: appbar,
       body: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -126,26 +127,40 @@ class _MyAppState extends State<MyHomePage> {
             Column(
               children: <Widget>[
                 Container(
-                  height: 50,
+                  height: (MediaQuery.of(context).size.height -
+                          appbar.preferredSize.height -
+                          MediaQuery.of(context).padding.top) *
+                      .1, //50
                   width: 400,
                   child: Image.asset(
                     'assets/images/bottom.png',
                     fit: BoxFit.cover,
-                    
                   ),
                 )
               ],
             ),
-            Chart(_recientTransactions),
             Container(
-              height: 350,
-              child: TransactionList(_userTransactions , _deleteTransaction),
+              child: Chart(_recientTransactions),
+              height: (MediaQuery.of(context).size.height -
+                      appbar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  .25,
+            ),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appbar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  .55, //50
+              child: TransactionList(_userTransactions, _deleteTransaction),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Container(
-                  height: 50,
+                  height: (MediaQuery.of(context).size.height -
+                          appbar.preferredSize.height -
+                          MediaQuery.of(context).padding.top) *
+                      .1, //50
                   width: 400,
                   child: Image.asset(
                     'assets/images/bottom.png',
