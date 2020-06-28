@@ -88,11 +88,17 @@ class _MyAppState extends State<MyHomePage> {
     });
   }
 
+  _deleteTransaction(String id){
+   setState(() {
+      _userTransactions.removeWhere((Tx) => Tx.id == id );
+   });
+  }
+
   void _startNewTrnas(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
       builder: (_) {
-        return NewTransaction(_addTransaction);
+        return NewTransaction(_addTransaction );
       },
     );
   }
@@ -133,7 +139,7 @@ class _MyAppState extends State<MyHomePage> {
             Chart(_recientTransactions),
             Container(
               height: 350,
-              child: TransactionList(_userTransactions),
+              child: TransactionList(_userTransactions , _deleteTransaction),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
