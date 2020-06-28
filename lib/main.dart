@@ -13,8 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          primarySwatch: Colors.lightBlue,
-          accentColor: Colors.orange,
+          primarySwatch: Colors.red,
+          primaryColor: Colors.lightBlue[300],
+          accentColor: Colors.lime[300],
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
                     title: TextStyle(
