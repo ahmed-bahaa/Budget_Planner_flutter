@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './widgets/new_transaction.dart';
@@ -71,7 +73,7 @@ class _MyAppState extends State<MyHomePage> {
     // ),
   ];
 
-  bool _showChart = false ;
+  bool _showChart = false;
 
   List<Transaction> get _recientTransactions {
     return _userTransactions.where((tx) {
@@ -111,8 +113,8 @@ class _MyAppState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ;
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
     final appbar = AppBar(
       title: Text(
         "Budget Planner",
@@ -126,12 +128,12 @@ class _MyAppState extends State<MyHomePage> {
       ],
     );
     final listWidget = Container(
-              height: (MediaQuery.of(context).size.height -
-                      appbar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  .55, //50
-              child: TransactionList(_userTransactions, _deleteTransaction),
-            );
+      height: (mediaQuery.size.height -
+              appbar.preferredSize.height -
+              mediaQuery.padding.top) *
+          .55, //50
+      child: TransactionList(_userTransactions, _deleteTransaction),
+    );
     return Scaffold(
       appBar: appbar,
       body: SingleChildScrollView(
@@ -141,61 +143,68 @@ class _MyAppState extends State<MyHomePage> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                if ( isLandscape ) Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Show chart"),
-                    Switch(value: _showChart, onChanged: (val) {
-                      setState(() {
-                        _showChart = val ;
-                      });
-                      
-                    }),
-                  ],
-                ),
-                if ( !isLandscape ) Container(
-                  height: (MediaQuery.of(context).size.height -
-                          appbar.preferredSize.height -
-                          MediaQuery.of(context).padding.top) *
-                      .1, //50
-                  width: 400,
-                  child: Image.asset(
-                    'assets/images/bottom.png',
-                    fit: BoxFit.cover,
+                if (isLandscape)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Show chart"),
+                      Switch.adaptive(
+                        activeColor: Theme.of(context).accentColor,
+                        value: _showChart,
+                        onChanged: (val) {
+                          setState(() {
+                            _showChart = val;
+                          });
+                        },
+                      ),
+                    ],
                   ),
-                )
+                if (!isLandscape)
+                  Container(
+                    height: (mediaQuery.size.height -
+                            appbar.preferredSize.height -
+                            mediaQuery.padding.top) *
+                        .1, //50
+                    width: 400,
+                    child: Image.asset(
+                      'assets/images/bottom.png',
+                      fit: BoxFit.cover,
+                    ),
+                  )
               ],
             ),
-            if ( !isLandscape ) listWidget,
-            if ( isLandscape ) _showChart ?
-            Container(
-              child: Chart(_recientTransactions),
-              height: (MediaQuery.of(context).size.height -
-                      appbar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  .25,
-            ) : 
-            listWidget,
-            if ( !isLandscape ) Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Container(
-                  height: (MediaQuery.of(context).size.height -
-                          appbar.preferredSize.height -
-                          MediaQuery.of(context).padding.top) *
-                      .1, //50
-                  width: 400,
-                  child: Image.asset(
-                    'assets/images/bottom.png',
-                    fit: BoxFit.cover,
-                  ),
-                )
-              ],
-            )
+            if (!isLandscape) listWidget,
+            if (isLandscape)
+              _showChart
+                  ? Container(
+                      child: Chart(_recientTransactions),
+                      height: (mediaQuery.size.height -
+                              appbar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          .25,
+                    )
+                  : listWidget,
+            if (!isLandscape)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Container(
+                    height: (mediaQuery.size.height -
+                            appbar.preferredSize.height -
+                            mediaQuery.padding.top) *
+                        .1, //50
+                    width: 400,
+                    child: Image.asset(
+                      'assets/images/bottom.png',
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                ],
+              )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Platform.isIOS ? Container() : FloatingActionButton(
         // backgroundColor: Colors.tealAccent[700],
         splashColor: Colors.tealAccent,
         child: Icon(Icons.add),
