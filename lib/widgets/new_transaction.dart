@@ -50,58 +50,65 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            TextField(
-              decoration: InputDecoration(labelText: "Title"),
-              controller: titleController,
-              onSubmitted: (_) => addTrans(),
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: "Amount"),
-              controller: amountController,
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => addTrans(),
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null ? "No date chosen!" : 'Picked date: ${DateFormat().add_yMd().format(_selectedDate)}'),
-                  ),
-                  FlatButton(
-                    onPressed: _presentDatePicker,
-                    child: Text(
-                      "Chosse date",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    textColor: Theme.of(context).primaryColor,
-                  ),
-                ],
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 3,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            right: 10,
+            left: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(labelText: "Title"),
+                controller: titleController,
+                onSubmitted: (_) => addTrans(),
               ),
-            ),
-            RaisedButton(
-              // color: Colors.tealAccent[700],
-              color: Theme.of(context).primaryColor,
-              textColor: Theme.of(context).textTheme.button.color,
-              child: Text(
-                "Add Transaction",
-                style: TextStyle(
-                  // color: Colors.white,
-                  fontSize: 17,
+              TextField(
+                decoration: InputDecoration(labelText: "Amount"),
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => addTrans(),
+              ),
+              Container(
+                height: 70,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        _selectedDate == null ? "No date chosen!" : 'Picked date: ${DateFormat().add_yMd().format(_selectedDate)}'),
+                    ),
+                    FlatButton(
+                      onPressed: _presentDatePicker,
+                      child: Text(
+                        "Chosse date",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      textColor: Theme.of(context).primaryColor,
+                    ),
+                  ],
                 ),
               ),
-              onPressed: addTrans,
-              splashColor: Colors.pink[300],
-            ),
-          ],
+              RaisedButton(
+                // color: Colors.tealAccent[700],
+                color: Theme.of(context).primaryColor,
+                textColor: Theme.of(context).textTheme.button.color,
+                child: Text(
+                  "Add Transaction",
+                  style: TextStyle(
+                    // color: Colors.white,
+                    fontSize: 17,
+                  ),
+                ),
+                onPressed: addTrans,
+                splashColor: Colors.pink[300],
+              ),
+            ],
+          ),
         ),
       ),
     );
