@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
 import './widgets/chart.dart';
 import './models/transaction.dart';
 
 void main() {
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp
+  // ]);
   runApp(MyApp());
 }
 
@@ -67,6 +71,8 @@ class _MyAppState extends State<MyHomePage> {
     // ),
   ];
 
+  bool _showChart = false ;
+
   List<Transaction> get _recientTransactions {
     return _userTransactions.where((tx) {
       return tx.date.isAfter((DateTime.now().subtract(
@@ -105,6 +111,8 @@ class _MyAppState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape ;
     final appbar = AppBar(
       title: Text(
         "Budget Planner",
@@ -117,6 +125,13 @@ class _MyAppState extends State<MyHomePage> {
         ),
       ],
     );
+    final listWidget = Container(
+              height: (MediaQuery.of(context).size.height -
+                      appbar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  .55, //50
+              child: TransactionList(_userTransactions, _deleteTransaction),
+            );
     return Scaffold(
       appBar: appbar,
       body: SingleChildScrollView(
@@ -126,7 +141,19 @@ class _MyAppState extends State<MyHomePage> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                Container(
+                if ( isLandscape ) Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Show chart"),
+                    Switch(value: _showChart, onChanged: (val) {
+                      setState(() {
+                        _showChart = val ;
+                      });
+                      
+                    }),
+                  ],
+                ),
+                if ( !isLandscape ) Container(
                   height: (MediaQuery.of(context).size.height -
                           appbar.preferredSize.height -
                           MediaQuery.of(context).padding.top) *
@@ -139,21 +166,17 @@ class _MyAppState extends State<MyHomePage> {
                 )
               ],
             ),
+            if ( !isLandscape ) listWidget,
+            if ( isLandscape ) _showChart ?
             Container(
               child: Chart(_recientTransactions),
               height: (MediaQuery.of(context).size.height -
                       appbar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   .25,
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appbar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  .55, //50
-              child: TransactionList(_userTransactions, _deleteTransaction),
-            ),
-            Column(
+            ) : 
+            listWidget,
+            if ( !isLandscape ) Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Container(
